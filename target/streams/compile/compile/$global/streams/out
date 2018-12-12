@@ -1,0 +1,11 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/ludo/Documents/Computer Language Processing/clp-lab01/src/amyc/interpreter/Interpreter.scala:179:64: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : List[amyc.ast.SymbolicTreeModule.Pattern][0m
+[0m[[0m[31merror[0m] [0m[0m required: List[amyc.interpreter.Interpreter.Value][0m
+[0m[[0m[31merror[0m] [0m[0m                      val formalTail: List[Value] = formalArgs.tail[0m
+[0m[[0m[31merror[0m] [0m[0m                                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/ludo/Documents/Computer Language Processing/clp-lab01/src/amyc/interpreter/Interpreter.scala:180:112: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : List[amyc.interpreter.Interpreter.Value][0m
+[0m[[0m[31merror[0m] [0m[0m required: List[amyc.ast.SymbolicTreeModule.Pattern][0m
+[0m[[0m[31merror[0m] [0m[0m                      val tailPat = matchesPattern(CaseClassValue(con1, realArgs.tail), CaseClassPattern(con2, formalTail))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

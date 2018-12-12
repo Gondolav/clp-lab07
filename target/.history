@@ -1,0 +1,37 @@
+run library/Std.scala examples/Hello.scala
+test
+run library/Std.scala examples/Hello.scala
+test
+run library/Std.scala examples/Hello.scala
+test
+package sumission
+package submission
+packageSubmission
+test
+run library/Std.scala examples/Hello.scala
+packageSubmission
+run library/Std.scala examples/Hello.scala
+run examples/Arithmetic.scala
+run library/Std.scala examples/Arithmetic.scala
+run library/Std.scala library/List.scala library/Option.scala examples/Arithmetic.scala
+test
+packageSubmission
+test
+sbt
+test
+packageSubmission
+test
+run examples/TestLists.scala library/Std.scala library/Option.scala library/List.scala
+?
+packageSubmission
+test
+packageSubmission
+test
+packageSubmission
+test
+packageSubmission
+test
+packageSubmission
+compile
+run examples.Arithmetic
+run examples/Arithmetic

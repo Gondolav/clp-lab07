@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.InterpreterTests, com.novocode.junit.JUnitFingerprint@6b615dca, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
+[0m[[0m[0minfo[0m] [0m[0mPassed: Total 2, Failed 0, Errors 0, Passed 2[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	amyc.test.InterpreterTests[0m
