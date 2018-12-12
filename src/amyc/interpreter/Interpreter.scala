@@ -1,6 +1,7 @@
 package amyc
 package interpreter
 
+import scala.language.implicitConversions
 import utils._
 import ast.SymbolicTreeModule._
 import ast.Identifier
@@ -9,12 +10,14 @@ import analyzer.SymbolTable
 // An interpreter for Amy programs, implemented in Scala
 object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
+  type Lazy = () => Value
+
   def run(ctx: Context)(v: (Program, SymbolTable)): Unit = {
     val (program, table) = v
 
     // These built-in functions do not have an Amy implementation in the program,
     // instead their implementation is encoded in this map
-    val builtIns: Map[(String, String), (List[Value]) => Value] = Map(
+    val builtIns: Map[(String, String), List[Value] => Value] = Map(
       ("Std", "printInt") -> { args => println(args.head.asInt); UnitValue },
       ("Std", "printString") -> { args => println(args.head.asString); UnitValue },
       ("Std", "readString") -> { args => StringValue(scala.io.StdIn.readLine()) },
@@ -47,11 +50,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       expr match {
         case Variable(name) =>
           locals(name) match {
-            case l@LazyValue(f) => {
-              val value = l.force(f)()
-              //locals.updated(name, value)
-              value
-            }
+            case l: LazyValue => l()
             case _ => locals(name)
           }
 
@@ -113,7 +112,8 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           IntValue(-interpret(e).asInt)
 
         case Call(qname, args) =>
-          val interpretedArgs = args.map(arg => LazyValue(() => interpret(arg)))
+          //val interpretedArgs = args.map(arg => LazyValue(interpret(arg)))
+          val interpretedArgs = args.map(interpret)
           if (isConstructor(qname)) CaseClassValue(qname, interpretedArgs)
           else {
             val funOwner = findFunctionOwner(qname)
@@ -130,7 +130,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           interpret(e2)
 
         case Let(df, value, body) =>
-          val newLocals: Map[Identifier, Value] = locals + (df.name -> LazyValue(() => interpret(value)))
+          val newLocals: Map[Identifier, Value] = locals + (df.name -> LazyValue(interpret(value)))
           interpret(body)(newLocals)
 
         case Ite(cond, thenn, elze) =>
@@ -205,8 +205,6 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
     }
   }
 
-
-
   // A class that represents a value computed by interpreting an expression
   abstract class Value {
     def asInt: Int = this.asInstanceOf[IntValue].i
@@ -222,6 +220,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       case UnitValue => "()"
       case CaseClassValue(constructor, args) =>
         constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
+      case LazyValue(f) => f.toString()
     }
   }
 
@@ -233,8 +232,11 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
   case class CaseClassValue(constructor: Identifier, args: List[Value]) extends Value
 
-  type Lazy = () => Value
-  case class LazyValue(f: Lazy) extends Value {
+  case class LazyValue(private val f: Lazy) extends Value {
+    val expr: Lazy = force(f)
+
+    def apply(): Value = expr()
+
     def force(f: Lazy): Lazy = {
       var evaluated: Boolean = false
       var value: Value = UnitValue
@@ -246,8 +248,10 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
         value
       }
     }
-    def apply(f: Lazy): Value = force(f)()
   }
 
+  implicit def v2l(v: => Value): Lazy = () => v
+
   case object UnitValue extends Value
+
 }

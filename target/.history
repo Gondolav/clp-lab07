@@ -57,3 +57,25 @@ compile
 run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
 compile
 exit
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+exit

@@ -1,5 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/avenezia/ComputerLanguageProcessing/clp-lab07/src/amyc/interpreter/Interpreter.scala:50:37: not enough arguments for method apply: (f: amyc.interpreter.Interpreter.Lazy)amyc.interpreter.Interpreter.Value in class LazyValue.[0m
-[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter f.[0m
-[0m[[0m[31merror[0m] [0m[0m            case l@LazyValue(_) => l()[0m
-[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/avenezia/ComputerLanguageProcessing/clp-lab07/src/amyc/interpreter/Interpreter.scala:52:28: not enough arguments for method apply: (v: amyc.interpreter.Interpreter.Value)amyc.interpreter.Interpreter.Value in class LazyValue.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter v.[0m
+[0m[[0m[31merror[0m] [0m[0m              val value = l()[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
