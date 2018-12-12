@@ -1,11 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/ludo/Documents/Computer Language Processing/clp-lab01/src/amyc/interpreter/Interpreter.scala:179:64: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : List[amyc.ast.SymbolicTreeModule.Pattern][0m
-[0m[[0m[31merror[0m] [0m[0m required: List[amyc.interpreter.Interpreter.Value][0m
-[0m[[0m[31merror[0m] [0m[0m                      val formalTail: List[Value] = formalArgs.tail[0m
-[0m[[0m[31merror[0m] [0m[0m                                                               ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/ludo/Documents/Computer Language Processing/clp-lab01/src/amyc/interpreter/Interpreter.scala:180:112: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : List[amyc.interpreter.Interpreter.Value][0m
-[0m[[0m[31merror[0m] [0m[0m required: List[amyc.ast.SymbolicTreeModule.Pattern][0m
-[0m[[0m[31merror[0m] [0m[0m                      val tailPat = matchesPattern(CaseClassValue(con1, realArgs.tail), CaseClassPattern(con2, formalTail))[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                                                               ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/avenezia/ComputerLanguageProcessing/clp-lab07/src/amyc/interpreter/Interpreter.scala:50:37: not enough arguments for method apply: (f: amyc.interpreter.Interpreter.Lazy)amyc.interpreter.Interpreter.Value in class LazyValue.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter f.[0m
+[0m[[0m[31merror[0m] [0m[0m            case l@LazyValue(_) => l()[0m
+[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

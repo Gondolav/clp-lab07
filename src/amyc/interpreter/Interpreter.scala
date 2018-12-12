@@ -9,34 +9,6 @@ import analyzer.SymbolTable
 // An interpreter for Amy programs, implemented in Scala
 object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
-  // A class that represents a value computed by interpreting an expression
-  abstract class Value {
-    def asInt: Int = this.asInstanceOf[IntValue].i
-
-    def asBoolean: Boolean = this.asInstanceOf[BooleanValue].b
-
-    def asString: String = this.asInstanceOf[StringValue].s
-
-    override def toString: String = this match {
-      case IntValue(i) => i.toString
-      case BooleanValue(b) => b.toString
-      case StringValue(s) => s
-      case UnitValue => "()"
-      case CaseClassValue(constructor, args) =>
-        constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
-    }
-  }
-
-  case class IntValue(i: Int) extends Value
-
-  case class BooleanValue(b: Boolean) extends Value
-
-  case class StringValue(s: String) extends Value
-
-  case object UnitValue extends Value
-
-  case class CaseClassValue(constructor: Identifier, args: List[Value]) extends Value
-
   def run(ctx: Context)(v: (Program, SymbolTable)): Unit = {
     val (program, table) = v
 
@@ -71,41 +43,61 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
     }
 
     // Interprets a function, using evaluations for local variables contained in 'locals'
-    // TODO: Complete all missing cases. Look at the given ones for guidance.
     def interpret(expr: Expr)(implicit locals: Map[Identifier, Value]): Value = {
       expr match {
         case Variable(name) =>
-          locals(name)
+          locals(name) match {
+            case l@LazyValue(f) => {
+              val value = l.force(f)()
+              //locals.updated(name, value)
+              value
+            }
+            case _ => locals(name)
+          }
+
         case IntLiteral(i) =>
           IntValue(i)
+
         case BooleanLiteral(b) =>
           BooleanValue(b)
+
         case StringLiteral(s) =>
           StringValue(s)
+
         case UnitLiteral() =>
           UnitValue
+
         case Plus(lhs, rhs) =>
           IntValue(interpret(lhs).asInt + interpret(rhs).asInt)
+
         case Minus(lhs, rhs) =>
           IntValue(interpret(lhs).asInt - interpret(rhs).asInt)
+
         case Times(lhs, rhs) =>
           IntValue(interpret(lhs).asInt * interpret(rhs).asInt)
+
         case Div(lhs, rhs) =>
           val r = interpret(rhs).asInt
           if (r != 0) IntValue(interpret(lhs).asInt / interpret(rhs).asInt)
           else ctx.reporter.fatal("Division by 0")
+
         case Mod(lhs, rhs) =>
           val r = interpret(rhs).asInt
           if (r != 0) IntValue(interpret(lhs).asInt % interpret(rhs).asInt)
           else ctx.reporter.fatal("Modulo by 0")
+
         case LessThan(lhs, rhs) =>
           BooleanValue(interpret(lhs).asInt < interpret(rhs).asInt)
+
         case LessEquals(lhs, rhs) =>
           BooleanValue(interpret(lhs).asInt <= interpret(rhs).asInt)
+
         case And(lhs, rhs) =>
           BooleanValue(interpret(lhs).asBoolean && interpret(rhs).asBoolean)
+
         case Or(lhs, rhs) =>
           BooleanValue(interpret(lhs).asBoolean || interpret(rhs).asBoolean)
+
         case Equals(lhs, rhs) => (interpret(lhs), interpret(rhs)) match {
           case (r: StringValue, l: StringValue) => BooleanValue(r.eq(l))
           case (r: CaseClassValue, l: CaseClassValue) => BooleanValue(r.eq(l))
@@ -113,12 +105,15 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
         }
         case Concat(lhs, rhs) =>
           StringValue(interpret(lhs).asString ++ interpret(rhs).asString)
+
         case Not(e) =>
           BooleanValue(!interpret(e).asBoolean)
+
         case Neg(e) =>
           IntValue(-interpret(e).asInt)
+
         case Call(qname, args) =>
-          val interpretedArgs = args.map(interpret)
+          val interpretedArgs = args.map(arg => LazyValue(() => interpret(arg)))
           if (isConstructor(qname)) CaseClassValue(qname, interpretedArgs)
           else {
             val funOwner = findFunctionOwner(qname)
@@ -129,23 +124,20 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
               interpret(fun.body)(newLocals)
             }
           }
-        // Hint: Check if it is a call to a constructor first,
-        //       then if it is a built-in function (otherwise it is a normal function).
-        //       Use the helper methods provided above to retrieve information from the symbol table.
-        //       Think how locals should be modified.
+
         case Sequence(e1, e2) =>
           interpret(e1)
           interpret(e2)
+
         case Let(df, value, body) =>
-          val newLocals: Map[Identifier, Value] = locals + (df.name -> interpret(value))
+          val newLocals: Map[Identifier, Value] = locals + (df.name -> LazyValue(() => interpret(value)))
           interpret(body)(newLocals)
+
         case Ite(cond, thenn, elze) =>
           if (interpret(cond).asBoolean) interpret(thenn)
           else interpret(elze)
-        case Match(scrut, cases) =>
-          // Hint: We give you a skeleton to implement pattern matching
-          //       and the main body of the implementation
 
+        case Match(scrut, cases) =>
           val evS = interpret(scrut)
 
           // Returns a list of pairs id -> value,
@@ -212,4 +204,50 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       interpret(e)(Map())
     }
   }
+
+
+
+  // A class that represents a value computed by interpreting an expression
+  abstract class Value {
+    def asInt: Int = this.asInstanceOf[IntValue].i
+
+    def asBoolean: Boolean = this.asInstanceOf[BooleanValue].b
+
+    def asString: String = this.asInstanceOf[StringValue].s
+
+    override def toString: String = this match {
+      case IntValue(i) => i.toString
+      case BooleanValue(b) => b.toString
+      case StringValue(s) => s
+      case UnitValue => "()"
+      case CaseClassValue(constructor, args) =>
+        constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
+    }
+  }
+
+  case class IntValue(i: Int) extends Value
+
+  case class BooleanValue(b: Boolean) extends Value
+
+  case class StringValue(s: String) extends Value
+
+  case class CaseClassValue(constructor: Identifier, args: List[Value]) extends Value
+
+  type Lazy = () => Value
+  case class LazyValue(f: Lazy) extends Value {
+    def force(f: Lazy): Lazy = {
+      var evaluated: Boolean = false
+      var value: Value = UnitValue
+      () => {
+        if (!evaluated) {
+          value = f()
+          evaluated = true
+        }
+        value
+      }
+    }
+    def apply(f: Lazy): Value = force(f)()
+  }
+
+  case object UnitValue extends Value
 }

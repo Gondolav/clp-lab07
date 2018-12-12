@@ -35,3 +35,25 @@ packageSubmission
 compile
 run examples.Arithmetic
 run examples/Arithmetic
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+compile
+exit

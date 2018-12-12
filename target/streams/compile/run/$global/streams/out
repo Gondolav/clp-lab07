@@ -1,34 +1,38 @@
-[0m[[0m[0minfo[0m] [0m[0mRunning amyc.Main examples/Arithmetic[0m
+[0m[[0m[0minfo[0m] [0m[0mRunning amyc.Main examples/Stream.scala library/Std.scala library/Option.scala library/List.scala[0m
 [0m[[0m[0mdebug[0m] [0m[0mWaiting for threads to exit or System.exit to be called.[0m
 [0m[[0m[0mdebug[0m] [0m[0m  Classpath:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	/Users/ludo/Documents/Computer Language Processing/clp-lab01/target/scala-2.12/classes[0m
-[0m[[0m[0mdebug[0m] [0m[0m	/Users/ludo/Documents/Computer Language Processing/clp-lab01/lib/amyc-frontend-1.5.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0m	/Users/ludo/.sbt/boot/scala-2.12.3/lib/scala-library.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0m	/Users/ludo/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.1.1.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-1 to terminate.[0m
-[0m[[0m[0mdebug[0m] [0m[0mInterrupting thread run-main-1[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Interrupted run-main-1[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-1 exited.[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/avenezia/ComputerLanguageProcessing/clp-lab07/target/scala-2.12/classes[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/avenezia/ComputerLanguageProcessing/clp-lab07/lib/amyc-frontend-1.5.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/avenezia/.sbt/boot/scala-2.12.3/lib/scala-library.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/avenezia/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.1.1.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-16 to terminate.[0m
+[0m[[0m[31merror[0m] [0m[0m(run-main-16) java.lang.ClassCastException: amyc.interpreter.Interpreter$LazyValue cannot be cast to amyc.interpreter.Interpreter$StringValue[0m
+[0m[[0m[31merror[0m] [0m[0mjava.lang.ClassCastException: amyc.interpreter.Interpreter$LazyValue cannot be cast to amyc.interpreter.Interpreter$StringValue[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$Value.asString(Interpreter.scala:212)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.$anonfun$run$2(Interpreter.scala:19)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.interpret$1(Interpreter.scala:116)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.$anonfun$run$15(Interpreter.scala:200)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.Option.foreach(Option.scala:257)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.$anonfun$run$14(Interpreter.scala:198)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.$anonfun$run$14$adapted(Interpreter.scala:197)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.collection.immutable.List.foreach(List.scala:389)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.run(Interpreter.scala:197)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.interpreter.Interpreter$.run(Interpreter.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.Main$.main(Main.scala:26)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.Main.main(Main.scala)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.lang.reflect.Method.invoke(Method.java:498)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.invokeMain(Run.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.run0(Run.scala:83)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.execute$1(Run.scala:61)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.$anonfun$run$4(Run.scala:73)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.util.InterfaceUtil$$anon$1.get(InterfaceUtil.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.TrapExit$App.run(TrapExit.scala:252)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.lang.Thread.run(Thread.java:748)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-16 exited.[0m
 [0m[[0m[0mdebug[0m] [0m[0mInterrupting remaining threads (should be all daemons).[0m
 [0m[[0m[0mdebug[0m] [0m[0mSandboxed run complete..[0m
-[0m[[0m[31merror[0m] [0m[0mjava.lang.RuntimeException: Nonzero exit code: 1[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Run$.executeTrapExit(Run.scala:120)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.run(Run.scala:73)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Defaults$.$anonfun$runTask$3(Defaults.scala:1200)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Defaults$.$anonfun$runTask$3$adapted(Defaults.scala:1198)[0m
-[0m[[0m[31merror[0m] [0m[0m	at scala.Function1.$anonfun$compose$1(Function1.scala:44)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:42)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.std.Transform$$anon$4.work(System.scala:64)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.$anonfun$submit$2(Execute.scala:257)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:17)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.work(Execute.scala:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.$anonfun$submit$1(Execute.scala:257)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:167)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.CompletionService$$anon$2.call(CompletionService.scala:32)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.FutureTask.run(FutureTask.java:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.FutureTask.run(FutureTask.java:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.lang.Thread.run(Thread.java:745)[0m
-[0m[[0m[31merror[0m] [0m[0m(compile:[31mrun[0m) Nonzero exit code: 1[0m
