@@ -7,6 +7,8 @@ import ast.SymbolicTreeModule._
 import ast.Identifier
 import analyzer.SymbolTable
 
+import scala.collection.mutable
+
 // An interpreter for Amy programs, implemented in Scala
 object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
@@ -17,9 +19,9 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
     // These built-in functions do not have an Amy implementation in the program,
     // instead their implementation is encoded in this map
-    val builtIns: Map[(String, String), List[Value] => Value] = Map(
-      ("Std", "printInt") -> { args => println(args.head.asInt); UnitValue },
-      ("Std", "printString") -> { args => println(args.head.asString); UnitValue },
+    val builtIns: Map[(String, String), List[LazyValue] => Value] = Map(
+      ("Std", "printInt") -> { args => println(args.head().asInt); UnitValue },
+      ("Std", "printString") -> { args => println(args.head().asString); UnitValue },
       ("Std", "readString") -> { args => StringValue(scala.io.StdIn.readLine()) },
       ("Std", "readInt") -> { args =>
         val input = scala.io.StdIn.readLine()
@@ -30,8 +32,8 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
             ctx.reporter.fatal(s"""Could not parse "$input" to Int""")
         }
       },
-      ("Std", "intToString") -> { args => StringValue(args.head.asInt.toString) },
-      ("Std", "digitToString") -> { args => StringValue(args.head.asInt.toString) }
+      ("Std", "intToString") -> { args => StringValue(args.head().asInt.toString) },
+      ("Std", "digitToString") -> { args => StringValue(args.head().asInt.toString) }
     )
 
     // Utility functions to interface with the symbol table.
@@ -46,12 +48,16 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
     }
 
     // Interprets a function, using evaluations for local variables contained in 'locals'
-    def interpret(expr: Expr)(implicit locals: Map[Identifier, Value]): Value = {
+    def interpret(expr: Expr)(implicit locals: mutable.Map[Identifier, Value]): Value = {
       expr match {
         case Variable(name) =>
-          locals(name) match {
-            case l: LazyValue => l()
-            case _ => locals(name)
+          val v = locals(name)
+          v match {
+            case l: LazyValue =>
+              val value = l()
+              locals.update(name, value)
+              value
+            case _ => v
           }
 
         case IntLiteral(i) =>
@@ -112,15 +118,15 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           IntValue(-interpret(e).asInt)
 
         case Call(qname, args) =>
-          //val interpretedArgs = args.map(arg => LazyValue(interpret(arg)))
-          val interpretedArgs = args.map(interpret)
+          val interpretedArgs = args.map(arg => LazyValue(interpret(arg)))
+          //val interpretedArgs = args.map(interpret)
           if (isConstructor(qname)) CaseClassValue(qname, interpretedArgs)
           else {
             val funOwner = findFunctionOwner(qname)
             if (builtIns.get((funOwner, qname.name)).isDefined) builtIns((funOwner, qname.name))(interpretedArgs)
             else {
               val fun = findFunction(funOwner, qname.name)
-              val newLocals = fun.paramNames.zip(interpretedArgs).toMap
+              val newLocals: mutable.Map[Name, Value] = mutable.Map() ++ fun.paramNames.zip(interpretedArgs).toMap
               interpret(fun.body)(newLocals)
             }
           }
@@ -130,7 +136,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           interpret(e2)
 
         case Let(df, value, body) =>
-          val newLocals: Map[Identifier, Value] = locals + (df.name -> LazyValue(interpret(value)))
+          val newLocals: mutable.Map[Identifier, Value] = locals + (df.name -> LazyValue(interpret(value)))
           interpret(body)(newLocals)
 
         case Ite(cond, thenn, elze) =>
@@ -145,7 +151,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           // Returns None when the pattern fails to match.
           // Note: Only works on well typed patterns (which have been ensured by the type checker).
           def matchesPattern(v: Value, pat: Pattern): Option[List[(Identifier, Value)]] = {
-            ((v, pat): @unchecked) match {
+            ((v(), pat): @unchecked) match {
               case (_, WildcardPattern()) =>
                 Some(List())
               case (_, IdPattern(name)) =>
@@ -168,8 +174,8 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
                     val f = formalArgs.head
                     if (realArgs.size == 1 && formalArgs.size == 1) matchesPattern(r, f)
                     else {
-                      val headPat = matchesPattern(r, f)
-                      val tailPat = matchesPattern(CaseClassValue(con1, realArgs.tail), CaseClassPattern(con2, formalArgs.tail))
+                      val headPat = matchesPattern(LazyValue(r), f)
+                      val tailPat = matchesPattern(LazyValue(CaseClassValue(con1, realArgs.tail)), CaseClassPattern(con2, formalArgs.tail))
 
                       if (headPat.isDefined && tailPat.isDefined) Some(headPat.get ++ tailPat.get)
                       else None
@@ -201,7 +207,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       m <- program.modules
       e <- m.optExpr
     } {
-      interpret(e)(Map())
+      interpret(e)(mutable.Map())
     }
   }
 

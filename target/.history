@@ -79,3 +79,16 @@ compile
 run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
 run examples/List.scala library/Std.scala library/Option.scala library/List.scala
 exit
+compile
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Match.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+compile
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+exit
