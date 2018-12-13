@@ -92,3 +92,5 @@ run examples/List.scala library/Std.scala library/Option.scala library/List.scal
 run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
 run examples/List.scala library/Std.scala library/Option.scala library/List.scala
 exit
+run examples/FunctionCall.scala library/Std.scala library/Option.scala library/List.scala
+exit
