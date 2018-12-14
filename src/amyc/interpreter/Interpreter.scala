@@ -119,7 +119,6 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
 
         case Call(qname, args) =>
           val interpretedArgs = args.map(arg => LazyValue(interpret(arg)))
-          //val interpretedArgs = args.map(interpret)
           if (isConstructor(qname)) CaseClassValue(qname, interpretedArgs)
           else {
             val funOwner = findFunctionOwner(qname)
@@ -260,5 +259,4 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
   implicit def v2l(v: => Value): Lazy = () => v
 
   case object UnitValue extends Value
-
 }
