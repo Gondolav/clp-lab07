@@ -151,7 +151,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           // Returns None when the pattern fails to match.
           // Note: Only works on well typed patterns (which have been ensured by the type checker).
           def matchesPattern(v: Value, pat: Pattern): Option[List[(Identifier, Value)]] = {
-            ((v(), pat): @unchecked) match {
+            ((v, pat): @unchecked) match {
               case (_, WildcardPattern()) =>
                 Some(List())
               case (_, IdPattern(name)) =>
@@ -166,6 +166,8 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
                 None
               case (UnitValue, LiteralPattern(UnitLiteral())) =>
                 Some(List())
+              case (LazyValue(l), _) =>
+                matchesPattern(l(), pat)
               case (CaseClassValue(con1, realArgs), CaseClassPattern(con2, formalArgs)) =>
                 if (con1.name.equals(con2.name)) {
                   if (realArgs.isEmpty || formalArgs.isEmpty) Some(List())
@@ -174,9 +176,8 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
                     val f = formalArgs.head
                     if (realArgs.size == 1 && formalArgs.size == 1) matchesPattern(r, f)
                     else {
-                      val headPat = matchesPattern(LazyValue(r), f)
-                      val tailPat = matchesPattern(LazyValue(CaseClassValue(con1, realArgs.tail)), CaseClassPattern(con2, formalArgs.tail))
-
+                      val headPat = matchesPattern(r, f)
+                      val tailPat = matchesPattern(CaseClassValue(con1, realArgs.tail), CaseClassPattern(con2, formalArgs.tail))
                       if (headPat.isDefined && tailPat.isDefined) Some(headPat.get ++ tailPat.get)
                       else None
                     }

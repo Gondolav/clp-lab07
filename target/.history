@@ -94,3 +94,23 @@ run examples/List.scala library/Std.scala library/Option.scala library/List.scal
 exit
 run examples/FunctionCall.scala library/Std.scala library/Option.scala library/List.scala
 exit
+run examples/Match.scala library/Std.scala library/Option.scala library/List.scala
+cd
+exit
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Match.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Arithmetic.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Factorial.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Fibonacci.scala library/Std.scala library/Option.scala library/List.scala
+run examples/FunctionCall.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Hanoi.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Hello.scala library/Std.scala library/Option.scala library/List.scala
+run examples/HelloInt.scala library/Std.scala library/Option.scala library/List.scala
+run examples/List.scala library/Std.scala library/Option.scala library/List.scala
+run examples/ListMin.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Match.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Printing.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
+run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
+exit
