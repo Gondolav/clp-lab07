@@ -114,3 +114,7 @@ run examples/Printing.scala library/Std.scala library/Option.scala library/List.
 run examples/Stream.scala library/Std.scala library/Option.scala library/List.scala
 run examples/Val.scala library/Std.scala library/Option.scala library/List.scala
 exit
+run examples/FunctionCall.scala library/List.scala library/Std.scala library/Option.scala
+run examples/List.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Match.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Stream.scala library/List.scala library/Std.scala library/Option.scala

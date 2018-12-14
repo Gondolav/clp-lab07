@@ -239,11 +239,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
   case class CaseClassValue(constructor: Identifier, args: List[Value]) extends Value
 
   case class LazyValue(private val f: Lazy) extends Value {
-    val expr: Lazy = force(f)
-
-    def apply(): Value = expr()
-
-    def force(f: Lazy): Lazy = {
+    val expr: Lazy = {
       var evaluated: Boolean = false
       var value: Value = UnitValue
       () => {
@@ -254,9 +250,12 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
         value
       }
     }
+
+    def apply(): Value = expr()
   }
 
   implicit def v2l(v: => Value): Lazy = () => v
 
   case object UnitValue extends Value
+
 }
