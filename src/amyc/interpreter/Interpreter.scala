@@ -22,13 +22,13 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
     val builtIns: Map[(String, String), List[LazyValue] => Value] = Map(
       ("Std", "printInt") -> { args => println(args.head().asInt); UnitValue },
       ("Std", "printString") -> { args => println(args.head().asString); UnitValue },
-      ("Std", "readString") -> { args => StringValue(scala.io.StdIn.readLine()) },
-      ("Std", "readInt") -> { args =>
+      ("Std", "readString") -> { _ => StringValue(scala.io.StdIn.readLine()) },
+      ("Std", "readInt") -> { _ =>
         val input = scala.io.StdIn.readLine()
         try {
           IntValue(input.toInt)
         } catch {
-          case ne: NumberFormatException =>
+          case _: NumberFormatException =>
             ctx.reporter.fatal(s"""Could not parse "$input" to Int""")
         }
       },
@@ -226,7 +226,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       case UnitValue => "()"
       case CaseClassValue(constructor, args) =>
         constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
-      case LazyValue(f) => f.toString()
+      case l@LazyValue(_) => f"<lazy> ${l()}"
     }
   }
 
