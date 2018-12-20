@@ -1,13 +1,12 @@
 package amyc
 package interpreter
 
-import scala.language.implicitConversions
-import utils._
-import ast.SymbolicTreeModule._
-import ast.Identifier
-import analyzer.SymbolTable
+import amyc.analyzer.SymbolTable
+import amyc.ast.Identifier
+import amyc.ast.SymbolicTreeModule._
+import amyc.utils._
 
-import scala.collection.mutable
+import scala.language.implicitConversions
 
 // An interpreter for Amy programs, implemented in Scala
 object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
@@ -48,15 +47,12 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
     }
 
     // Interprets a function, using evaluations for local variables contained in 'locals'
-    def interpret(expr: Expr)(implicit locals: mutable.Map[Identifier, Value]): Value = {
+    def interpret(expr: Expr)(implicit locals: Map[Identifier, Value]): Value = {
       expr match {
         case Variable(name) =>
           val v = locals(name)
           v match {
-            case l: LazyValue =>
-              val value = l()
-              locals.update(name, value)
-              value
+            case l: LazyValue => l()
             case _ => v
           }
 
@@ -125,7 +121,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
             if (builtIns.get((funOwner, qname.name)).isDefined) builtIns((funOwner, qname.name))(interpretedArgs)
             else {
               val fun = findFunction(funOwner, qname.name)
-              val newLocals: mutable.Map[Name, Value] = mutable.Map() ++ fun.paramNames.zip(interpretedArgs).toMap
+              val newLocals = fun.paramNames.zip(interpretedArgs).toMap
               interpret(fun.body)(newLocals)
             }
           }
@@ -135,7 +131,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
           interpret(e2)
 
         case Let(df, value, body) =>
-          val newLocals: mutable.Map[Identifier, Value] = locals + (df.name -> LazyValue(interpret(value)))
+          val newLocals = locals + (df.name -> LazyValue(interpret(value)))
           interpret(body)(newLocals)
 
         case Ite(cond, thenn, elze) =>
@@ -207,7 +203,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       m <- program.modules
       e <- m.optExpr
     } {
-      interpret(e)(mutable.Map())
+      interpret(e)(Map())
     }
   }
 
@@ -226,7 +222,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       case UnitValue => "()"
       case CaseClassValue(constructor, args) =>
         constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
-      case l@LazyValue(_) => f"<lazy> ${l()}"
+      case LazyValue(f) => f.toString()
     }
   }
 

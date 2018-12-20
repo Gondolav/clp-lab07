@@ -126,3 +126,17 @@ run examples/LazyValueToString.scala library/List.scala library/Std.scala librar
 run examples/List.scala library/List.scala library/Std.scala library/Option.scala
 run examples/Val.scala library/List.scala library/Std.scala library/Option.scala
 exit
+compile
+run examples/Val.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Stream.scala library/List.scala library/Std.scala library/Option.scala
+run examples/FunctionCall.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Match.scala library/List.scala library/Std.scala library/Option.scala
+run examples/FunctionCall.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Stream.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Match.scala library/List.scala library/Std.scala library/Option.scala
+compile
+run examples/Match.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Stream.scala library/List.scala library/Std.scala library/Option.scala
+run examples/Val.scala library/List.scala library/Std.scala library/Option.scala
+run examples/FunctionCall.scala library/List.scala library/Std.scala library/Option.scala
+exit
