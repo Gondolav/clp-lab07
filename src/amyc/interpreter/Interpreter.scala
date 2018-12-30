@@ -222,7 +222,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
       case UnitValue => "()"
       case CaseClassValue(constructor, args) =>
         constructor.name + "(" + args.map(_.toString).mkString(", ") + ")"
-      case LazyValue(f) => f.toString()
+      case LazyValue(f) => "<lazy>" + f.toString()
     }
   }
 

@@ -1,4 +1,4 @@
-object FunctionCall {
+object FunctionCallNotUsingArgument {
   def f(x: Int): Unit = {
     Std.printInt(10)
   }
