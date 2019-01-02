@@ -1,4 +1,4 @@
-object Stream {
+object Stream1 {
   def countFrom(start: Int): L.List = {
     L.Cons(start, countFrom(start + 1))
   }

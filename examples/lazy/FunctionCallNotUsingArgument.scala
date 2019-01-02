@@ -1,6 +1,6 @@
 object FunctionCallNotUsingArgument {
   def f(x: Int): Unit = {
-    Std.printInt(10)
+    Std.printString("Ok!")
   }
 
   val y: Int = (Std.printString("Hello"); 2);
