@@ -161,7 +161,7 @@ object Interpreter extends Pipeline[(Program, SymbolTable), Unit] {
                 None
               case (UnitValue, LiteralPattern(UnitLiteral())) =>
                 Some(List())
-              case (LazyValue(l), _) =>
+              case (l@LazyValue(_), _) =>
                 matchesPattern(l(), pat)
               case (CaseClassValue(con1, realArgs), CaseClassPattern(con2, formalArgs)) =>
                 if (con1.name.equals(con2.name)) {
